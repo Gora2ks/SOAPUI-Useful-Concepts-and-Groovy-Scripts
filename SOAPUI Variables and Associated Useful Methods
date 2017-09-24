@@ -1,0 +1,81 @@
+SOAPUI Variables and Associated Useful Methods
+
+1. The most used variables/ objects in SoapUI are:
+    1.1 log (object) – refer above
+    1.2 messageExchange (variable)
+    1.3 context (object)
+    1.4 testRunner (variable)
+
+1.1. log (object) – Variable/Oject
+     Commonly used methods of log variable:
+	    log.info
+	    log.warn
+	    log.error
+	    log.fatal
+      
+1.2. messageExchange – Variable/Oject
+     Some of the common methods of the object includes,
+      getEndpoint() : returns the target endpoint as a String
+      getRequestContent() : returns the content of the test request
+      getRequestContentAsXml() : returns the content of the test request (as XML)
+      getResponseContent() : returns the content of the response to the test request
+      getResponseContentAsXml() : returns the content of the response to the test request (as XML)
+      getTimeStamp() : returns the request time stamp as a long number (see below for an example of converting from long to a standard time format)
+      getTimeTaken() : returns the amount of time taken to process the request (in milliseconds)
+      getRequestHeaders() : returns request headers as a StringToStringsMap object
+      getResponseHeaders() : returns response headers as a StringToStringsMap object
+      
+      Note: This varible can be used only with in script assertion context.
+      API Doc Reference: http://www.soapui.org/apidocs/com/eviware/soapui/model/iface/messageexchange.html
+            
+ 1.3. context – Variable/Oject
+      commonly used methods of context object:
+        getCurrentStepIndex() : Returns index of the current test step
+        getProperty(String testStep, String propertyName) : Returns value of a property
+        getTestCase() :  Fetches associated test case. Using this we can navigate through the model item hierarchy
+        getTestRunner() : Call testRunner from context
+        hasProperty() : Verifies for context related properties
+        removeProperty() : Removes an existing context property
+        setProperty() : Sets a context property
+        context.expand( '${QCAgentStatus#Response#$[\'agentStatus\'][0][\'lines\'][1][\'state\']}' ).toString();
+        Example: String qcAgentStatus = context.expand( '${QCAgentStatus#Response#$[\'agentStatus\'][0][\'lines\'][1][\'state\']}' ).toString();
+        context.expand( '${QCAgentStatus#Response}' )  Returns reponse of the test step
+        Example: String agentStatus = context.expand( '${QCAgentStatus#Response}' ).toString()
+
+	Writing Property Expansion:
+	def response = context.expand( '${Get_Campaigns#Response#$[\'dataObj\'][0][\'campaign_state\']}' )
+	
+	While Writing
+	XPATH:	
+		$[\'dataObj\'][0][\'campaign_state\']
+	jSON Path : 
+		$['dataObj'][0]['campaign_id']
+	
+	Note: no need to give escase single quote in json path
+
+
+      API Doc Reference: http://www.soapui.org/apidocs/index.html?com/eviware/soapui/impl/wadl/inference/schema/Context.html
+      
+  1.4. testRunner Variable/Oject
+      Commonly used methods of testRunner variable:
+        cancel(String reason) : Cancels an ongoing test run with the specified reason
+        fail(String reason) : Fails an ongoing test run with the specified reason
+        getReason() : Gets the reason why a running test was canceled or failed
+        getStartTime() : Returns the time this runner was last started
+        getStatus() : Gets the current status of this TestRunner
+        getTimeTaken() : Returns the time taken by this runner since its last start
+        isRunning() : Lets the user know the current run status
+        start(boolean async) : Starts running this TestRunners TestCase.
+        waitUntilFinished() : Blocks until this runner is finished, (returns directly if it already has finished)
+        gotoStepByName("EndOfTestCase")
+        runTestStepByName("QCAgentStatus")
+        testRunner.testCase.setPropertyValue("currentSkillID",currentSkillID);
+        testRunner.testCase.getTestStepByName("QCAgentLogon").httpRequest.response.responseHeaders["Set-Cookie"][0]
+
+      API Doc Reference: https://www.soapui.org/apidocs/com/eviware/soapui/model/testsuite/TestRunner.html
+
+Note: SOAPUI has two sets of APIs:
+	    1. Pro Version: http://www.soapui.org/apidocs/pro/index.html
+	    2. Free Version: http://www.soapui.org/apidocs/index.html
+      
+Undesranding API Doc font conventions: italic/normal
