@@ -1,0 +1,5 @@
+Changing the  java  version used of SoapUI ? 
+
+1. SoapUI ships jre along with its installer and SOAPUI_HOME/bin/soapui.bat has the reference for the same.
+
+2. If you want to use external jdk other than default,then have backup of soapui.bat and edit the file to set your java home.
